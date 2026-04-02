@@ -5,7 +5,8 @@
 #include <stdbool.h> // ik denk dat deze hier overbodig is
 
 
-bool handleRequest(struct stream);
+bool handleRequest(struct stream stream);
+const char* handleResponse(struct stream stream);
 
 /*
 

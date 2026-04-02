@@ -76,20 +76,10 @@ void loop() {
     Serial.println("new client");
     ledYellowPulseStart(nowMs);
 
-    struct stream stream = {clientAvailable, clientPeek,
-                            clientRead};
-
-    bool ok = handleRequest(stream);
-
-    if (ok) {
-      httpClient.println(F("HTTP/1.0 200 OK"));
-      httpClient.println(F("Connection: close"));
-      httpClient.println();
-    } else {
-      httpClient.println(F("HTTP/1.0 400 Bad Request"));
-      httpClient.println(F("Connection: close"));
-      httpClient.println();
-    }
+    struct stream stream = {clientAvailable, clientPeek, clientRead};
+    const char* response = handleResponse(stream);
+    Serial.println(response);
+    httpClient.print(response);
 
     delay(1);
     httpClient.stop();
