@@ -1,34 +1,35 @@
 #include "buffermock.h"
 #include <stdio.h>
-
 #include <string.h>
 
 #define MAX_LENGTH 200
 
-// input stream mock
 struct {
   char text[MAX_LENGTH];
   int length;
   int current;
 } buffer;
 
-// input stream buffer mock implementation
-
 void reset_buffer(const char* text) {
-  buffer.length = 0;
-  for (;;) {
-    if (text[buffer.length] == '\0')
-      break;
+  size_t inputLength;
 
-    buffer.length++;
+  if (text == NULL) {
+    buffer.text[0] = '\0';
+    buffer.length = 0;
+    buffer.current = 0;
+    return;
+  }
 
-    if (buffer.length > MAX_LENGTH) {
-      printf("ERROR: input text too long\n");
-      break;
-    }
+  inputLength = strlen(text);
+
+  if (inputLength >= MAX_LENGTH) {
+    printf("ERROR: input text too long\n");
+    inputLength = MAX_LENGTH - 1;
   }
 
   strncpy(buffer.text, text, MAX_LENGTH - 1);
+  buffer.text[MAX_LENGTH - 1] = '\0';
+  buffer.length = (int)inputLength;
   buffer.current = 0;
 }
 
@@ -36,10 +37,20 @@ int available_buffer() {
   return buffer.current < buffer.length;
 }
 
-char peek_buffer() { return buffer.text[buffer.current]; }
+char peek_buffer() {
+  if (!available_buffer()) {
+    return '\0';
+  }
+
+  return buffer.text[buffer.current];
+}
 
 char read_buffer() {
   char c = peek_buffer();
-  buffer.current++;
+
+  if (available_buffer()) {
+    buffer.current++;
+  }
+
   return c;
 }
