@@ -52,6 +52,7 @@ rpi_IP=10.1.200.11
 object_files=$(project)/cserver.o \
              $(project)/token.o \
              $(project)/abnf.o \
+			 $(project)/response.o \
              buffermock.o
 
 unittest=unit_test

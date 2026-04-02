@@ -31,17 +31,10 @@ void loop() {
   if (httpClient) {
     Serial.println("new client");
 
-    struct stream stream = {clientAvailable, clientPeek,
-                            clientRead};
-    bool ok = handleRequest(stream);
-
-    if (ok) {
-      httpClient.println(F("HTTP/1.0 200 OK"));
-      httpClient.println();
-    } else {
-      httpClient.println(F("HTTP/1.0 400 BAD REQUEST"));
-      httpClient.println();
-    }
+    struct stream stream = {clientAvailable, clientPeek, clientRead};
+    const char* response = handleResponse(stream);
+    Serial.println(response);
+    httpClient.print(response);
 
     delay(1);
     httpClient.stop(); // close connection
