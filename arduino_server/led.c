@@ -7,6 +7,15 @@ static bool yellowPulseActive = false;
 static unsigned long greenPulseStartMs = 0UL;
 static unsigned long yellowPulseStartMs = 0UL;
 
+static void ledGreenOn(void);
+static void ledGreenOff(void);
+
+static void ledYellowOn(void);
+static void ledYellowOff(void);
+
+static void ledsAllOn(void);
+static void ledsAllOff(void);
+
 void ledsInit(void) {
   pinMode(ledRedSensor1, OUTPUT);
   pinMode(ledRedSensor2, OUTPUT);

@@ -15,15 +15,6 @@ void ledsInit(void);
 void ledRed1Set(bool on);
 void ledRed2Set(bool on);
 
-void ledGreenOn(void);
-void ledGreenOff(void);
-
-void ledYellowOn(void);
-void ledYellowOff(void);
-
-void ledsAllOn(void);
-void ledsAllOff(void);
-
 void ledGreenPulseStart(unsigned long nowMs);
 void ledYellowPulseStart(unsigned long nowMs);
 void ledsUpdate(unsigned long nowMs);

@@ -31,7 +31,7 @@ static bool read_request_text(struct stream stream,
                               size_t len);
 static bool split_request(const char request[],
                           struct parsed_request* parsed);
-static bool parse_start_line(char line[],
+static bool parse_start_line(const char line[],
                              struct parsed_request* parsed);
 static bool parse_headers(char headers[],
                           struct parsed_request* parsed);
@@ -90,7 +90,7 @@ static bool read_request_text(struct stream stream,
   return true;
 }
 
-static bool parse_start_line(char line[],
+static bool parse_start_line(const char line[],
                              struct parsed_request* parsed) {
   char extra = '\0';
   int matched = sscanf(line, "%7s %63s %15s %c", parsed->method,
@@ -174,7 +174,7 @@ static bool split_request(const char request[],
                           struct parsed_request* parsed) {
   char mutable_request[MAX_REQUEST_SIZE];
   char* header_end;
-  char* body_start;
+  const char* body_start;
   char* first_line_end;
   size_t body_len;
   size_t expected_body_len;
@@ -231,7 +231,7 @@ static int split_path_segments(const char path[],
                                char segments[][MAX_SEGMENT_LEN],
                                int max_segments) {
   char copy[MAX_PATH_LEN];
-  char* segment;
+  const char* segment;
   int count = 0;
 
   if (strlen(path) >= sizeof(copy)) {

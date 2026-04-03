@@ -35,8 +35,7 @@ void initTokenizer();
 struct token peekToken(struct stream);
 // remove token from stream
 struct token readToken(struct stream);
-// essentialle token look back (last read token)
-struct token prevToken();
+
 
 bool hasTokenType(struct token token, enum tokentype type);
 bool hasTokenValue(struct token token, enum tokentype type,
