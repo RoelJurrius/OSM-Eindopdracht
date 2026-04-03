@@ -2,6 +2,18 @@
 #include <math.h>
 #include <stdlib.h>
 
+#ifndef ARDUINO
+static int hostRandom(int minInclusive, int maxExclusive) {
+  int span = maxExclusive - minInclusive;
+
+  if (span <= 0) {
+    return minInclusive;
+  }
+
+  return minInclusive + (rand() % span);
+}
+#endif
+
 static struct sensorData sensor1;
 static struct sensorData sensor2;
 
@@ -268,6 +280,16 @@ double sensorGetStdev(int sensorId) {
   return round1(runningStatsStdev(&sensor->stats));
 }
 
+unsigned long sensorStatsCount(int sensorId) {
+  struct sensorData* sensor = getSensor(sensorId);
+
+  if (sensor == NULL) {
+    return 0UL;
+  }
+
+  return sensor->stats.count;
+}
+
 bool sensorBufferIsFull(int sensorId) {
   struct sensorData* sensor = getSensor(sensorId);
 
@@ -293,9 +315,9 @@ size_t sensorBufferSize(void) {
 }
 
 int sensorMockRead1(void) {
-   return random(0,1024); 
+  return (int)(rand() % 1024);
 }
 
 int sensorMockRead2(void) {
-   return random(0,1024); 
+  return (int)(rand() % 1024);
 }
