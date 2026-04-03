@@ -898,4 +898,4 @@ def the_real_acceptation_tests():
 if __name__ == "__main__":
   # change to the_real_acceptation_tests() as soon as you've successfully
   # ran the initial acceptation tests
-  test_the_acceptation_test_setup()
+  the_real_acceptation_tests();
