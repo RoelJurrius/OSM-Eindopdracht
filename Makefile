@@ -47,7 +47,7 @@ LDLIBS=`pkg-config --libs glib-2.0` -lm
 
 # your configuration:
 arduino_IP=10.1.200.21
-rpi_IP=10.1.200.11
+rpi_IP=192.168.2.16
 
 object_files=$(project)/cserver.o \
              $(project)/token.o \
