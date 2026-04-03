@@ -8,5 +8,4 @@ int available_buffer();
 char read_buffer();
 char peek_buffer();
 
-
 #endif

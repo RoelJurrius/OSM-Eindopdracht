@@ -31,17 +31,17 @@ static bool circularBufferResize(struct circularBuffer* cb,
                                  size_t size);
 static void circularBufferPush(struct circularBuffer* cb,
                                int value);
-static double circularBufferAverage(
-    const struct circularBuffer* cb);
+static double
+circularBufferAverage(const struct circularBuffer* cb);
 
 static void runningStatsInit(struct runningStats* stats);
 static void runningStatsReset(struct runningStats* stats);
 static void runningStatsAdd(struct runningStats* stats,
                             int value);
-static double runningStatsMean(
-    const struct runningStats* stats);
-static double runningStatsStdev(
-    const struct runningStats* stats);
+static double
+runningStatsMean(const struct runningStats* stats);
+static double
+runningStatsStdev(const struct runningStats* stats);
 
 static double round1(double value) {
   if (value >= 0.0) {
@@ -101,8 +101,8 @@ static void circularBufferPush(struct circularBuffer* cb,
   }
 }
 
-static double circularBufferAverage(
-    const struct circularBuffer* cb) {
+static double
+circularBufferAverage(const struct circularBuffer* cb) {
   size_t i;
   size_t start;
   double sum = 0.0;
@@ -144,16 +144,16 @@ static void runningStatsAdd(struct runningStats* stats,
   stats->m2 += delta * delta2;
 }
 
-static double runningStatsMean(
-    const struct runningStats* stats) {
+static double
+runningStatsMean(const struct runningStats* stats) {
   if (stats->count == 0UL) {
     return 0.0;
   }
   return stats->mean;
 }
 
-static double runningStatsStdev(
-    const struct runningStats* stats) {
+static double
+runningStatsStdev(const struct runningStats* stats) {
   if (stats->count < 2UL) {
     return 0.0;
   }
@@ -223,10 +223,8 @@ void sensorsInterruptReset(void) {
   runningStatsReset(&sensor1.stats);
   runningStatsReset(&sensor2.stats);
 
-  circularBufferResize(&sensor1.buffer,
-                       defaultBufferSize);
-  circularBufferResize(&sensor2.buffer,
-                       defaultBufferSize);
+  circularBufferResize(&sensor1.buffer, defaultBufferSize);
+  circularBufferResize(&sensor2.buffer, defaultBufferSize);
 
   currentBufferSize = defaultBufferSize;
 }
@@ -310,14 +308,8 @@ size_t sensorBufferCount(int sensorId) {
   return sensor->buffer.count;
 }
 
-size_t sensorBufferSize(void) {
-  return currentBufferSize;
-}
+size_t sensorBufferSize(void) { return currentBufferSize; }
 
-int sensorMockRead1(void) {
-  return (int)(rand() % 1024);
-}
+int sensorMockRead1(void) { return (int)(rand() % 1024); }
 
-int sensorMockRead2(void) {
-  return (int)(rand() % 1024);
-}
+int sensorMockRead2(void) { return (int)(rand() % 1024); }

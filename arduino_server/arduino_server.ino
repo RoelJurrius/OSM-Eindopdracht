@@ -1,11 +1,11 @@
 #include <Ethernet.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 extern "C" {
 #include "cserver.h"
-#include "sensor_mock.h"
 #include "led.h"
+#include "sensor_mock.h"
 }
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
@@ -43,9 +43,7 @@ char bufferedPeek() {
   return '\0';
 }
 
-void handleResetInterrupt() {
-  interruptTriggered = true;
-}
+void handleResetInterrupt() { interruptTriggered = true; }
 
 void updateRedLeds() {
   ledRed1Set(sensorBufferIsFull(SENSORID1));
@@ -72,14 +70,16 @@ bool requestComplete(void) {
     return false;
   }
 
-  size_t headerSize = (size_t)(headerEnd - requestBuffer) + 4U;
+  size_t headerSize =
+      (size_t)(headerEnd - requestBuffer) + 4U;
   int contentLength = parseContentLength(requestBuffer);
 
   if (contentLength < 0) {
     return false;
   }
 
-  return requestLength >= headerSize + (size_t)contentLength;
+  return requestLength >=
+         headerSize + (size_t)contentLength;
 }
 
 bool readClientRequest(EthernetClient& client) {
@@ -88,7 +88,8 @@ bool readClientRequest(EthernetClient& client) {
   requestIndex = 0;
   requestBuffer[0] = '\0';
 
-  while (client.connected() && (millis() - startMs) < REQUEST_TIMEOUT_MS) {
+  while (client.connected() &&
+         (millis() - startMs) < REQUEST_TIMEOUT_MS) {
     while (client.available()) {
       char c = (char)client.read();
 
@@ -128,7 +129,10 @@ void sendNumericResponse(EthernetClient& client,
                          const char* statusText,
                          double value) {
   char body[32];
-  dtostrf((double)value, 0, 1, body); dtostrf((double)value, 0, 1, body);  // snprintf met %.1f gaf op AVR-Arduino '?' i.p.v. een correcte float-string
+  dtostrf((double)value, 0, 1, body);
+  dtostrf((double)value, 0, 1,
+          body); // snprintf met %.1f gaf op AVR-Arduino '?'
+                 // i.p.v. een correcte float-string
 
   client.print("HTTP/1.0 ");
   client.print(statusCode);
@@ -144,50 +148,49 @@ void sendNumericResponse(EthernetClient& client,
 }
 
 void sendResponseFromHandler(EthernetClient& client) {
-  struct stream stream = {bufferedAvailable,
-                          bufferedPeek,
+  struct stream stream = {bufferedAvailable, bufferedPeek,
                           bufferedRead};
 
   struct response response = handleRequest(stream);
 
   switch (response.code) {
-    case OK_200_GET_AVG:
-      sendNumericResponse(client, 200, "OK",
-                          response.get_avg);
-      break;
+  case OK_200_GET_AVG:
+    sendNumericResponse(client, 200, "OK",
+                        response.get_avg);
+    break;
 
-    case OK_200_GET_STDEV:
-      sendNumericResponse(client, 200, "OK",
-                          response.get_stdev);
-      break;
+  case OK_200_GET_STDEV:
+    sendNumericResponse(client, 200, "OK",
+                        response.get_stdev);
+    break;
 
-    case OK_200_GET_ACTUAL:
-      sendNumericResponse(client, 200, "OK",
-                          response.get_actual);
-      break;
+  case OK_200_GET_ACTUAL:
+    sendNumericResponse(client, 200, "OK",
+                        response.get_actual);
+    break;
 
-    case CREATED_201_PUT_MODE_ACTIVE:
-    case CREATED_201_PUT_MODE_PASSIVE:
-    case CREATED_201_PUT_CBUFFSIZE:
-    case CREATED_201_POST_MEASUREMENT:
-    case CREATED_201_DELETE_MEASUREMENTS:
-      sendBasicResponse(client, 201, "Created");
-      break;
+  case CREATED_201_PUT_MODE_ACTIVE:
+  case CREATED_201_PUT_MODE_PASSIVE:
+  case CREATED_201_PUT_CBUFFSIZE:
+  case CREATED_201_POST_MEASUREMENT:
+  case CREATED_201_DELETE_MEASUREMENTS:
+    sendBasicResponse(client, 201, "Created");
+    break;
 
-    case NOT_FOUND_404:
-      sendBasicResponse(client, 404, "Not Found");
-      break;
+  case NOT_FOUND_404:
+    sendBasicResponse(client, 404, "Not Found");
+    break;
 
-    case BAD_REQUEST_400:
-    default:
-      sendBasicResponse(client, 400, "Bad Request");
-      break;
+  case BAD_REQUEST_400:
+  default:
+    sendBasicResponse(client, 400, "Bad Request");
+    break;
   }
 }
 
 bool isRootHealthCheck(void) {
-  return strcmp(requestBuffer,
-                "GET / HTTP/1.0\r\n\r\n") == 0;
+  return strcmp(requestBuffer, "GET / HTTP/1.0\r\n\r\n") ==
+         0;
 }
 
 void setup() {

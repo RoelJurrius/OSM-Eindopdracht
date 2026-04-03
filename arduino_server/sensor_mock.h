@@ -46,7 +46,8 @@ bool sensorAddMeasurement(int sensorId, int value);
 double sensorGetActual(int sensorId);
 double sensorGetAvg(int sensorId);
 double sensorGetStdev(int sensorId);
-unsigned long sensorStatsCount(int sensorId); // Checken of er al metingen zijn gedaan
+unsigned long sensorStatsCount(
+    int sensorId); // Checken of er al metingen zijn gedaan
 
 bool sensorBufferIsFull(int sensorId);
 size_t sensorBufferCount(int sensorId);

@@ -35,9 +35,7 @@ struct token peekToken(struct stream stream) {
   return _currentToken;
 }
 
-struct token prevToken() {
-  return _previousToken;
-}
+struct token prevToken() { return _previousToken; }
 
 bool hasTokenType(struct token token, enum tokentype type) {
   if (token.type == type) {
