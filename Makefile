@@ -53,10 +53,11 @@ object_files=$(project)/cserver.o \
              $(project)/token.o \
              $(project)/abnf.o \
 			 $(project)/response.o \
+			 $(project)/sensor_mock.o \
              buffermock.o
 
-unittest=unit_test
-# unittest=integration_test
+# unittest=unit_test
+unittest=integration_test
 
 # do not change:
 
