@@ -17,7 +17,7 @@ static bool tchar(struct stream, char[], size_t);
 static bool get_method(struct stream stream);
 static bool post_method(struct stream stream);
 static bool put_method(struct stream stream);
-static bool delete_method(struct stream stream); 
+static bool delete_method(struct stream stream);
 
 static bool readTokenType(struct stream, enum tokentype);
 static bool readTokenValue(struct stream, enum tokentype,
@@ -35,7 +35,7 @@ bool http_message(struct stream stream) {
   // ABNF for http_message is an AND construction, so early
   // exit on error
 
-if (!start_line(stream)) {
+  if (!start_line(stream)) {
     return false;
   }
 
@@ -86,7 +86,8 @@ static bool field_name(struct stream stream) {
 }
 
 static bool field_value(struct stream stream) {
-  while (readTokenType(stream, VCHAR) || readTokenType(stream, SP)) {
+  while (readTokenType(stream, VCHAR) ||
+         readTokenType(stream, SP)) {
     ;
   }
   return true;
@@ -114,10 +115,8 @@ static bool message_body(struct stream stream) {
 }
 
 static bool method(struct stream stream) {
-  return get_method(stream) ||
-         post_method(stream) ||
-         put_method(stream) ||
-         delete_method(stream);
+  return get_method(stream) || post_method(stream) ||
+         put_method(stream) || delete_method(stream);
 }
 
 static bool request_line(struct stream stream) {

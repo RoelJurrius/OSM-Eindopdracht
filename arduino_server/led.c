@@ -33,9 +33,7 @@ void ledRed2Set(bool on) {
   digitalWrite(ledRedSensor2, on ? HIGH : LOW);
 }
 
-void ledGreenOn(void) {
-  digitalWrite(ledGreenReset, HIGH);
-}
+void ledGreenOn(void) { digitalWrite(ledGreenReset, HIGH); }
 
 void ledGreenOff(void) {
   digitalWrite(ledGreenReset, LOW);

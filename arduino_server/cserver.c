@@ -27,8 +27,7 @@ struct parsed_request {
 static struct response bad_request_response(void);
 static struct response not_found_response(void);
 static bool read_request_text(struct stream stream,
-                              char buffer[],
-                              size_t len);
+                              char buffer[], size_t len);
 static bool split_request(const char request[],
                           struct parsed_request* parsed);
 static bool parse_start_line(const char line[],
@@ -37,24 +36,27 @@ static bool parse_headers(char headers[],
                           struct parsed_request* parsed);
 static bool parse_content_length(const char value[],
                                  int* content_length);
-static int split_path_segments(const char path[],
-                               char segments[][MAX_SEGMENT_LEN],
-                               int max_segments);
+static int
+split_path_segments(const char path[],
+                    char segments[][MAX_SEGMENT_LEN],
+                    int max_segments);
 static bool is_integer_text(const char text[]);
-static struct response route_request(
-    const struct parsed_request* parsed);
-static struct response handle_put(const char segments[][MAX_SEGMENT_LEN],
-                                  int segment_count,
-                                  const struct parsed_request* parsed);
-static struct response handle_post(
-    const char segments[][MAX_SEGMENT_LEN],
-    int segment_count,
-    const struct parsed_request* parsed);
-static struct response handle_delete(
-    const char segments[][MAX_SEGMENT_LEN],
-    int segment_count);
-static struct response handle_get(const char segments[][MAX_SEGMENT_LEN],
-                                  int segment_count);
+static struct response
+route_request(const struct parsed_request* parsed);
+static struct response
+handle_put(const char segments[][MAX_SEGMENT_LEN],
+           int segment_count,
+           const struct parsed_request* parsed);
+static struct response
+handle_post(const char segments[][MAX_SEGMENT_LEN],
+            int segment_count,
+            const struct parsed_request* parsed);
+static struct response
+handle_delete(const char segments[][MAX_SEGMENT_LEN],
+              int segment_count);
+static struct response
+handle_get(const char segments[][MAX_SEGMENT_LEN],
+           int segment_count);
 
 static struct response bad_request_response(void) {
   struct response response = {.code = BAD_REQUEST_400,
@@ -69,8 +71,7 @@ static struct response not_found_response(void) {
 }
 
 static bool read_request_text(struct stream stream,
-                              char buffer[],
-                              size_t len) {
+                              char buffer[], size_t len) {
   size_t index = 0U;
 
   if (len == 0U) {
@@ -93,8 +94,9 @@ static bool read_request_text(struct stream stream,
 static bool parse_start_line(const char line[],
                              struct parsed_request* parsed) {
   char extra = '\0';
-  int matched = sscanf(line, "%7s %63s %15s %c", parsed->method,
-                       parsed->path, parsed->version, &extra);
+  int matched =
+      sscanf(line, "%7s %63s %15s %c", parsed->method,
+             parsed->path, parsed->version, &extra);
 
   if (matched != 3) {
     return false;
@@ -193,7 +195,8 @@ static bool split_request(const char request[],
   }
 
   first_line_end = strstr(mutable_request, "\r\n");
-  if (first_line_end == NULL || first_line_end > header_end) {
+  if (first_line_end == NULL ||
+      first_line_end > header_end) {
     return false;
   }
 
@@ -227,9 +230,10 @@ static bool split_request(const char request[],
   return true;
 }
 
-static int split_path_segments(const char path[],
-                               char segments[][MAX_SEGMENT_LEN],
-                               int max_segments) {
+static int
+split_path_segments(const char path[],
+                    char segments[][MAX_SEGMENT_LEN],
+                    int max_segments) {
   char copy[MAX_PATH_LEN];
   const char* segment;
   int count = 0;
@@ -274,9 +278,10 @@ static bool is_integer_text(const char text[]) {
   return true;
 }
 
-static struct response handle_put(const char segments[][MAX_SEGMENT_LEN],
-                                  int segment_count,
-                                  const struct parsed_request* parsed) {
+static struct response
+handle_put(const char segments[][MAX_SEGMENT_LEN],
+           int segment_count,
+           const struct parsed_request* parsed) {
   struct response response;
 
   if (segment_count != 2) {
@@ -330,10 +335,10 @@ static struct response handle_put(const char segments[][MAX_SEGMENT_LEN],
   return not_found_response();
 }
 
-static struct response handle_post(
-    const char segments[][MAX_SEGMENT_LEN],
-    int segment_count,
-    const struct parsed_request* parsed) {
+static struct response
+handle_post(const char segments[][MAX_SEGMENT_LEN],
+            int segment_count,
+            const struct parsed_request* parsed) {
   long value;
   int sensor_id;
   struct response response;
@@ -372,9 +377,9 @@ static struct response handle_post(
   return response;
 }
 
-static struct response handle_delete(
-    const char segments[][MAX_SEGMENT_LEN],
-    int segment_count) {
+static struct response
+handle_delete(const char segments[][MAX_SEGMENT_LEN],
+              int segment_count) {
   struct response response;
 
   if (segment_count != 2) {
@@ -397,8 +402,9 @@ static struct response handle_delete(
   return response;
 }
 
-static struct response handle_get(const char segments[][MAX_SEGMENT_LEN],
-                                  int segment_count) {
+static struct response
+handle_get(const char segments[][MAX_SEGMENT_LEN],
+           int segment_count) {
   int sensor_id;
   struct response response;
 
@@ -451,12 +457,11 @@ static struct response handle_get(const char segments[][MAX_SEGMENT_LEN],
   return not_found_response();
 }
 
-static struct response route_request(
-    const struct parsed_request* parsed) {
+static struct response
+route_request(const struct parsed_request* parsed) {
   char segments[MAX_SEGMENTS][MAX_SEGMENT_LEN] = {{0}};
-  int segment_count = split_path_segments(parsed->path,
-                                          segments,
-                                          MAX_SEGMENTS);
+  int segment_count = split_path_segments(
+      parsed->path, segments, MAX_SEGMENTS);
 
   if (segment_count < 0) {
     return bad_request_response();
