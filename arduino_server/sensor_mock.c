@@ -2,17 +2,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-#ifndef ARDUINO
-static int hostRandom(int minInclusive, int maxExclusive) {
-  int span = maxExclusive - minInclusive;
-
-  if (span <= 0) {
-    return minInclusive;
-  }
-
-  return minInclusive + (rand() % span);
-}
-#endif
 
 static struct sensorData sensor1;
 static struct sensorData sensor2;
@@ -42,6 +31,9 @@ static double
 runningStatsMean(const struct runningStats* stats);
 static double
 runningStatsStdev(const struct runningStats* stats);
+
+static int sensorMockRead1(void);
+static int sensorMockRead2(void);    
 
 static double round1(double value) {
   if (value >= 0.0) {

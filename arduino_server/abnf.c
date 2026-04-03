@@ -7,11 +7,9 @@
 static bool field_line(struct stream);
 static bool field_name(struct stream);
 static bool field_value(struct stream);
-static bool http_token(struct stream);
 static bool http_version(struct stream);
 static bool message_body(struct stream);
 static bool method(struct stream);
-static bool origin_form(struct stream);
 static bool request_line(struct stream);
 static bool request_target(struct stream);
 static bool start_line(struct stream);
@@ -27,9 +25,9 @@ static bool readTokenValue(struct stream, enum tokentype,
 // catValue is not static to allow for an informative test
 void catValue(const char*, char[], size_t);
 
-static bool path_char(struct stream stream);
-static bool path_segment(struct stream stream);
-static bool ows(struct stream stream);
+static bool path_segment(struct stream stream) ;
+static bool ows(struct stream stream) ;
+
 
 bool http_message(struct stream stream) {
   initTokenizer();
@@ -95,9 +93,6 @@ static bool field_value(struct stream stream) {
   return true;
 }
 
-static bool http_token(struct stream stream) {
-  return false;
-}
 
 static bool http_version(struct stream stream) {
   return readTokenValue(stream, ALPHA, "H") &&
@@ -164,10 +159,6 @@ static bool request_target(struct stream stream) {
   }
 
   return true;
-}
-
-static bool origin_form(struct stream stream) {
-  return false;
 }
 
 static bool start_line(struct stream stream) {
@@ -276,11 +267,6 @@ static bool delete_method(struct stream stream) {
          readTokenValue(stream, ALPHA, "E");
 }
 
-static bool path_char(struct stream stream) {
-  return readTokenType(stream, ALPHA) ||
-         readTokenType(stream, DIGIT) ||
-         readTokenValue(stream, VCHAR, "_");
-}
 
 static bool path_segment(struct stream stream) {
   if (!tchar(stream, NULL, 0)) {

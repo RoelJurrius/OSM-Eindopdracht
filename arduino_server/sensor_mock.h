@@ -53,7 +53,5 @@ bool sensorBufferIsFull(int sensorId);
 size_t sensorBufferCount(int sensorId);
 size_t sensorBufferSize(void);
 
-int sensorMockRead1(void);
-int sensorMockRead2(void);
 
 #endif
